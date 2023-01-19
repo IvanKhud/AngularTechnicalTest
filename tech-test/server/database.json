@@ -4,14 +4,14 @@
       "id": 1,
       "label": "Kitchen Cleanup",
       "description": "Clean my dirty kitchen",
-      "category": "house",
+      "category": "house 2",
       "done": "Thu Jan 19 2023"
     },
     {
-      "id": 2,
-      "label": "Taxes",
-      "description": "Start doing my taxes and contact my accountant jhon for advice",
-      "category": "test",
+      "id": 4,
+      "label": "1",
+      "description": "w",
+      "category": "e",
       "done": false
     }
   ]
