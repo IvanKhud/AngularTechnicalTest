@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskListColumn } from '../../models/task-list-column';
 import { TasksService } from '../../services/tasks.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-task-list',
@@ -12,7 +13,7 @@ import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.co
 	styleUrls: ['./task-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent implements OnInit, OnDestroy {
 	public dataSource: MatTableDataSource<Task>;
 
 	public columns: TaskListColumn[] = [
@@ -43,7 +44,9 @@ export class TaskListComponent implements OnInit {
 		}
 	];
 
-	displayedColumns = this.columns.map((column: TaskListColumn) => column.key);
+	public displayedColumns = this.columns.map((column: TaskListColumn) => column.key);
+
+  private subscription: Subscription = new Subscription();
 
 	constructor(
 		private readonly tasksService: TasksService,
@@ -52,12 +55,18 @@ export class TaskListComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
-		this.tasksService.tasks$.subscribe((tasks: Task[]) => {
-			this.dataSource = new MatTableDataSource(tasks);
-			this.cdRef.detectChanges();
-		});
+    this.subscription.add(
+      this.tasksService.tasks$.subscribe((tasks: Task[]) => {
+        this.dataSource = new MatTableDataSource(tasks);
+        this.cdRef.detectChanges();
+      })
+    );
 		this.tasksService.loadTasks();
 	}
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
 	public addTask(): void {
 		this.dialog.open(EditTaskDialogComponent, {
@@ -78,13 +87,21 @@ export class TaskListComponent implements OnInit {
 	}
 
 	public markAsDone(task: Task): void {
-		this.tasksService.updateTask(task.id, {
-			done: new Date().toDateString()
-		});
+    this.subscription.add(
+      this.tasksService.updateTask(task.id, {
+        done: new Date().toDateString()
+      }).subscribe(() => {
+        this.tasksService.loadTasks();
+      })
+    );
 	}
 
 	public deleteTask(id: number): void {
-		this.tasksService.deleteTask(id);
+    this.subscription.add(
+      this.tasksService.deleteTask(id).subscribe(() => {
+        this.tasksService.loadTasks();
+      })
+    );
 	}
 
 	public applyFilter(event: Event): void {

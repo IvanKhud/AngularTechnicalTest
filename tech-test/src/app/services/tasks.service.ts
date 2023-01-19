@@ -25,8 +25,8 @@ export class TasksService {
 			});
 	}
 
-	public createTask(newTask: Partial<Task>): void {
-		this.tasks$
+	public createTask(newTask: Partial<Task>): Observable<void> {
+		return this.tasks$
 			.pipe(
 				take(1),
 				map((tasks: Task[]) => {
@@ -38,27 +38,14 @@ export class TasksService {
 					};
 				}),
 				switchMap((task: Task) => this.http.post<void>(this.baseUrl, task))
-			)
-			.subscribe(() => {
-				this.loadTasks();
-			});
+			);
 	}
 
-	public updateTask(id: number, task: Partial<Task>): void {
-		this.http
-			.patch<void>(`${this.baseUrl}/${id}`, task)
-			.pipe(take(1))
-			.subscribe(() => {
-				this.loadTasks();
-			});
+	public updateTask(id: number, task: Partial<Task>): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/${id}`, task);
 	}
 
-	public deleteTask(id: number): void {
-		this.http
-			.delete<void>(`${this.baseUrl}/${id}`)
-			.pipe(take(1))
-			.subscribe(() => {
-				this.loadTasks();
-			});
+	public deleteTask(id: number): Observable<void> {
+		return this.http.delete<void>(`${this.baseUrl}/${id}`);
 	}
 }
