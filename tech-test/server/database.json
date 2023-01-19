@@ -3,16 +3,37 @@
     {
       "id": 1,
       "label": "Kitchen Cleanup",
-      "description":  "Clean my dirty kitchen",
+      "description": "Clean my dirty kitchen",
       "category": "house",
-      "done": false
+      "done": "Thu Jan 19 2023"
     },
     {
       "id": 2,
       "label": "Taxes",
-      "description":  "Start doing my taxes and contact my accountant jhon for advice",
-      "category": "bureaucracy",
-      "done": "22-10-2019"
+      "description": "Start doing my taxes and contact my accountant jhon for advice",
+      "category": "test 2",
+      "done": "Thu Jan 19 2023"
+    },
+    {
+      "id": 5,
+      "label": "new",
+      "description": "test",
+      "category": "task",
+      "done": "Thu Jan 19 2023"
+    },
+    {
+      "id": 6,
+      "label": "new test",
+      "description": "my",
+      "category": "task 4",
+      "done": "Thu Jan 19 2023"
+    },
+    {
+      "id": 7,
+      "label": "1",
+      "description": "2",
+      "category": "3",
+      "done": "Thu Jan 19 2023"
     }
   ]
 }
