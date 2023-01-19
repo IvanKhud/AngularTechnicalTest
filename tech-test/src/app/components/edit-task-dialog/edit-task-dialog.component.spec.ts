@@ -87,6 +87,7 @@ describe(EditTaskDialogComponent.name, () => {
   it('should update task on save when id provided', () => {
     spyOn(tasksServiceMock, 'updateTask').and.returnValue(of(null));
     spyOn(tasksServiceMock, 'loadTasks');
+    component.data.id = 1;
     component.save();
 
     expect(tasksServiceMock.updateTask).toHaveBeenCalledOnceWith(dataMock.id, dataMock);
