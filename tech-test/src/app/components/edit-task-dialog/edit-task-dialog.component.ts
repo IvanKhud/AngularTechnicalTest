@@ -34,8 +34,8 @@ export class EditTaskDialogComponent implements OnDestroy {
 		this.subscription.add(
       saveAction.subscribe(() => {
         this.tasksService.loadTasks();
+        this.dialogRef.close();
       })
     );
-		this.dialogRef.close();
 	}
 }
